@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.dart'; // Pastikan ini sesuai dengan nama file home.dart
+import 'contacts.dart'; // Halaman setelah login akan menuju halaman kontak
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +13,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Untuk validasi
+  final _formKey = GlobalKey<FormState>();
+
   void _changeColor(Color color) {
     setState(() {
       _primaryColor = color;
@@ -20,16 +23,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+    if (_formKey.currentState!.validate()) {
+      String username = _usernameController.text;
+      String password = _passwordController.text;
 
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Silakan masukkan Username dan Password!'),
-        ),
-      );
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login berhasil!\nUsername: $username\nPassword: $password'),
@@ -38,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const ContactsPage()), // Setelah login, pindah ke halaman kontak
       );
     }
   }
@@ -75,16 +72,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-        body: Container(
-          margin: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _header(context),
-              _inputField(context),
-              _forgotPassword(context),
-              _signup(context),
-            ],
+        body: SingleChildScrollView( // Supaya bisa di-scroll
+          child: Container(
+            margin: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _header(context),
+                Form(
+                  key: _formKey, // Tambahkan form key untuk validasi
+                  child: _inputField(context),
+                ),
+                _forgotPassword(context),
+                _signup(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -117,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
+        TextFormField(
           controller: _usernameController,
           decoration: InputDecoration(
             hintText: "Username",
@@ -129,9 +131,15 @@ class _LoginPageState extends State<LoginPage> {
             filled: true,
             prefixIcon: Icon(Icons.person, color: _primaryColor),
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Username tidak boleh kosong';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 10),
-        TextField(
+        TextFormField(
           controller: _passwordController,
           decoration: InputDecoration(
             hintText: "Password",
@@ -144,6 +152,12 @@ class _LoginPageState extends State<LoginPage> {
             prefixIcon: Icon(Icons.lock, color: _primaryColor),
           ),
           obscureText: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Password tidak boleh kosong';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: 10),
         ElevatedButton(

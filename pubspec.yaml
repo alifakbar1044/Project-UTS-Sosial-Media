@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.1
+  shared_preferences: ^2.0.15
+  image_picker: ^0.8.7+4 # Tambahkan image_picker di sini
 
 dev_dependencies:
   flutter_test:

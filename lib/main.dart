@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart'; // Sesuaikan dengan nama file login kamu
-import 'home.dart';  // File yang akan berisi halaman Hello World
+import 'login.dart'; // Import file login.dart
+import 'contacts.dart'; // Import file contacts.dart
 
 void main() {
   runApp(const MyApp());
