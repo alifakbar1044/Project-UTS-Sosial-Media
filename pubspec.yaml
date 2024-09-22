@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.2
+  sdk: ">=3.5.2 <4.0.0"  # Pastikan versi sesuai
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.1
   shared_preferences: ^2.0.15
-  image_picker: ^0.8.7+4 # Tambahkan image_picker di sini
+  image_picker: ^0.8.7+4
 
 dev_dependencies:
   flutter_test:
@@ -24,11 +24,28 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/lin.png # Tambahkan path gambar lin.png
-    - assets/images/ # Untuk gambar lain di folder ini
+    - assets/lin.png
+    - assets/warna.png
+    - assets/images/     # Folder untuk menyimpan semua gambar lainnya
+    - assets/delete.png  # Ikon untuk delete
+    - assets/kontak.png  # Ikon untuk kontak
+    - assets/akbar.png   # Foto untuk kontak AKBAR
+    - assets/avan.png    # Foto untuk kontak AVAN
+    - assets/aldi.png    # Foto untuk kontak ALDI
+    - assets/ian.png     # Foto untuk kontak IAN
+    - assets/fabian.png  # Foto untuk kontak FABIAN
+    - assets/calvin.png  # Foto untuk kontak CALVIN
+    - assets/pencarian.png  # Ikon untuk pencarian
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
 
 flutter_native_splash:
-  image: assets/images/lingtan.png # Path untuk splash screen
+  image: assets/images/lingtan.png  # Gambar splash screen
   android: true
   ios: true
   web: false
