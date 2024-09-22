@@ -3,7 +3,7 @@ import 'chat_page.dart';
 import 'delete_kontak.dart';
 
 class ContactsPage extends StatefulWidget {
-  const ContactsPage({super.key});
+  const ContactsPage({Key? key}) : super(key: key);
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
@@ -16,35 +16,37 @@ class _ContactsPageState extends State<ContactsPage> {
     {"name": "AKBAR", "message": "ada", "image": "assets/akbar.png"},
     {"name": "CALVIN", "message": "di kampus", "image": "assets/calvin.png"},
     {"name": "ALDI", "message": "ada", "image": "assets/aldi.png"},
-    {"name": "DOSEN", "message": "untar"},
+    {"name": "DOSEN", "message": "untar", "image": "assets/default.png"},
     {"name": "FABIAN", "message": "di sekolah", "image": "assets/fabian.png"},
-    {"name": "DENNIS", "message": "di rumah"},
-    {"name": "RAJA", "message": "di rumah"},
+    {"name": "DENNIS", "message": "di rumah", "image": "assets/default.png"},
+    {"name": "RAJA", "message": "di rumah", "image": "assets/default.png"},
   ];
 
   List<Map<String, String>> _filteredContacts = [];
   bool _isSearching = false;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _filteredContacts = _contacts;
+    _filteredContacts = List.from(_contacts);
     _searchController.addListener(_filterContacts);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void _filterContacts() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      if (query.isEmpty) {
-        _filteredContacts = _contacts;
-      } else {
-        _filteredContacts = _contacts
-            .where((contact) =>
-                contact['name']!.toLowerCase().contains(query))
-            .toList();
-      }
+      _filteredContacts = _contacts
+          .where((contact) =>
+              contact['name']!.toLowerCase().contains(query))
+          .toList();
     });
   }
 
@@ -55,7 +57,7 @@ class _ContactsPageState extends State<ContactsPage> {
         "message": message,
         "image": "assets/default.png"
       });
-      _filteredContacts = _contacts;
+      _filteredContacts = List.from(_contacts);
     });
   }
 
@@ -74,7 +76,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _deleteContact(String name) {
     setState(() {
       _contacts.removeWhere((contact) => contact['name'] == name);
-      _filteredContacts = _contacts;
+      _filteredContacts = List.from(_contacts);
     });
   }
 
@@ -108,9 +110,7 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text("Batal"),
             ),
             ElevatedButton(
@@ -136,152 +136,151 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Cari Kontak...',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.white54),
-                ),
-                style: const TextStyle(color: Colors.white),
-              )
-            : Row(
-                children: [
-                  SizedBox(
-                    height: 70,
-                    width: 60,
-                    child: Image.asset(
-                      'assets/lin.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'LINGTAN',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-        backgroundColor: const Color.fromARGB(255, 142, 3, 3),
-        actions: [
-          IconButton(
-            icon: Image.asset(
-              'assets/pencarian.png',
-              height: 30,
-              width: 30,
-            ),
-            onPressed: () {
-              setState(() {
-                _isSearching = !_isSearching;
-                _searchController.clear();
-                _filteredContacts = _contacts;
-              });
-            },
-          ),
-          IconButton(
-            icon: Image.asset(
-              'assets/kontak.png',
-              height: 30,
-              width: 30,
-            ),
-            onPressed: _showDeleteContactDialog,
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: _filteredContacts.length,
-        itemBuilder: (context, index) {
-          final contact = _filteredContacts[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundColor: const Color.fromARGB(255, 155, 1, 1),
-                backgroundImage: contact['image'] != null
-                    ? AssetImage(contact['image']!)
-                    : null,
-                child: contact['image'] == null
-                    ? Text(
-                        contact['name']![0],
-                        style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 28,
-                          color: Colors.white,
-                        ),
-                      )
-                    : null,
-              ),
-              title: Text(
-                contact['name']!,
-                style: const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                contact['message']!,
-                style: const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 16,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ChatPage(contactName: contact['name']!),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
+      appBar: _buildAppBar(),
+      body: _buildContactList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddContactDialog,
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xFF910606),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.update),
-            label: 'Pembaruan',
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: _isSearching
+          ? TextField(
+              controller: _searchController,
+              autofocus: true,
+              decoration: const InputDecoration(
+                hintText: 'Cari Kontak...',
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.white54),
+              ),
+              style: const TextStyle(color: Colors.white),
+            )
+          : Row(
+              children: [
+                SizedBox(
+                  height: 70,
+                  width: 60,
+                  child: Image.asset(
+                    'assets/lin.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                const Text(
+                  'LINGTAN',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+      backgroundColor: const Color.fromARGB(255, 142, 3, 3),
+      actions: [
+        IconButton(
+          icon: Image.asset(
+            'assets/pencarian.png',
+            height: 30,
+            width: 30,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Panggilan',
+          onPressed: () {
+            setState(() {
+              _isSearching = !_isSearching;
+              _searchController.clear();
+              _filteredContacts = List.from(_contacts);
+            });
+          },
+        ),
+        IconButton(
+          icon: Image.asset(
+            'assets/kontak.png',
+            height: 30,
+            width: 30,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.groups),
-            label: 'Komunitas',
+          onPressed: _showDeleteContactDialog,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactList() {
+    return ListView.builder(
+      itemCount: _filteredContacts.length,
+      itemBuilder: (context, index) {
+        final contact = _filteredContacts[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: const Color.fromARGB(255, 155, 1, 1),
+              backgroundImage: AssetImage(contact['image']!),
+            ),
+            title: Text(
+              contact['name']!,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              contact['message']!,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 16,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(contactName: contact['name']!),
+                ),
+              );
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Pengaturan',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 172, 4, 4),
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.update),
+          label: 'Pembaruan',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.call),
+          label: 'Panggilan',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.groups),
+          label: 'Komunitas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.chat),
+          label: 'Chat',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Pengaturan',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: const Color.fromARGB(255, 172, 4, 4),
+      unselectedItemColor: Colors.black,
+      onTap: _onItemTapped,
     );
   }
 }
