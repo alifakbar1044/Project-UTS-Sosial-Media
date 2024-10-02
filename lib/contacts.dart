@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingtan/setting.dart';
 import 'chat_page.dart';
 import 'delete_kontak.dart';
 
@@ -44,19 +45,15 @@ class _ContactsPageState extends State<ContactsPage> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredContacts = _contacts
-          .where((contact) =>
-              contact['name']!.toLowerCase().contains(query))
+          .where((contact) => contact['name']!.toLowerCase().contains(query))
           .toList();
     });
   }
 
   void _addContact(String name, String message) {
     setState(() {
-      _contacts.add({
-        "name": name,
-        "message": message,
-        "image": "assets/default.png"
-      });
+      _contacts.add(
+          {"name": name, "message": message, "image": "assets/default.png"});
       _filteredContacts = List.from(_contacts);
     });
   }
@@ -135,9 +132,17 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> screens = [
+      _buildContactList(),
+      _buildContactList(),
+      _buildContactList(),
+      _buildContactList(),
+      SettingPage()
+    ];
+
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _buildContactList(),
+      body: screens[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddContactDialog,
         child: const Icon(Icons.add),
@@ -220,15 +225,27 @@ class _ContactsPageState extends State<ContactsPage> {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(
-              radius: 30,
+              radius: 29, // Ubah ukuran avatar disini
               backgroundColor: const Color.fromARGB(255, 155, 1, 1),
-              backgroundImage: AssetImage(contact['image']!),
+              backgroundImage: contact['image'] != 'assets/default.png'
+                  ? AssetImage(contact['image']!)
+                  : null,
+              child: contact['image'] == 'assets/default.png'
+                  ? Text(
+                      contact['name']!.substring(0, 1), // Inisial nama
+                      style: const TextStyle(
+                        fontSize: 20, // Ubah ukuran inisial disini
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    )
+                  : null,
             ),
             title: Text(
               contact['name']!,
               style: const TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 24,
+                fontSize: 25, // Ubah ukuran nama disini
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -236,7 +253,7 @@ class _ContactsPageState extends State<ContactsPage> {
               contact['message']!,
               style: const TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 16,
+                fontSize: 14, // Ubah ukuran pesan disini
               ),
             ),
             onTap: () {

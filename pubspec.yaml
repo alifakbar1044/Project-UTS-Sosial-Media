@@ -15,11 +15,19 @@ dependencies:
   shared_preferences: ^2.0.15
   image_picker: ^0.8.7+4
   cached_network_image: ^3.2.0
+  path_provider: ^2.0.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.1  # Menambahkan dependensi untuk ikon aplikasi
+
+flutter_launcher_icons:
+  android: true  # Menghasilkan ikon untuk Android
+  ios: true      # Menghasilkan ikon untuk iOS
+  image_path: "assets/lingtan.png"  # Path ke ikon yang akan digunakan
+  min_sdk_android: 21  # Android min SDK
 
 flutter:
   uses-material-design: true
@@ -37,6 +45,7 @@ flutter:
     - assets/fabian.png  # Foto untuk kontak FABIAN
     - assets/calvin.png  # Foto untuk kontak CALVIN
     - assets/pencarian.png  # Ikon untuk pencarian
+    - "assets/lingtan.png"
 
   fonts:
     - family: Poppins
