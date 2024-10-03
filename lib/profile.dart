@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:lingtan/contacts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
-  File? _image; // Variabel untuk menyimpan gambar yang dipilih
+  File? _image;
 
   @override
   void initState() {
@@ -33,8 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
         _image = File(imagePath);
       }
       username = prefs.getString('username') ?? 'Username';
-      email = prefs.getString('email') ?? ''; // Bersihkan tampilan email
-      phoneNumber = prefs.getString('phoneNumber') ?? ''; // Bersihkan tampilan phone number
+      email = prefs.getString('email') ?? '';
+      phoneNumber = prefs.getString('phoneNumber') ?? '';
       usernameController.text = username;
       emailController.text = email;
       phoneNumberController.text = phoneNumber;
@@ -46,7 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.setString('username', usernameController.text);
     await prefs.setString('email', emailController.text);
     await prefs.setString('phoneNumber', phoneNumberController.text);
-    // Update local state
     setState(() {
       username = usernameController.text;
       email = emailController.text;
@@ -77,19 +75,18 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.menu,
-                color: Colors.white,
-              ))
+            onPressed: () {},
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
       body: SafeArea(
         child: ListView(
           children: [
-            SizedBox(
-              height: 40,
-            ),
+            SizedBox(height: 40),
             ClipOval(
               child: CircleAvatar(
                 radius: 40,
@@ -97,8 +94,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: CircleAvatar(
                   radius: 38,
                   backgroundImage: _image != null
-                      ? FileImage(_image!) // Jika gambar dipilih, tampilkan
-                      : AssetImage('assets/akbar.png'), // Gambar default
+                      ? FileImage(_image!)
+                      : AssetImage('assets/akbar.png'),
                 ),
               ),
             ),
@@ -107,19 +104,17 @@ class _ProfilePageState extends State<ProfilePage> {
               username,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: const Color.fromARGB(255, 0, 0, 0), // Red text
+                color: const Color.fromARGB(255, 0, 0, 0),
                 fontSize: 24,
-                fontWeight: FontWeight.bold, // Bold text
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8),
-            // Email and phone section with bold text and better layout
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Phone number
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -132,14 +127,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         phoneNumber,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold, // Bold font
+                          fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 8),
-                  // Email
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -152,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         email,
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold, // Bold font
+                          fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
@@ -171,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       labelText: 'Edit Username',
                       border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)), // Red label
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
                     ),
                   ),
                   SizedBox(height: 8),
@@ -180,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       labelText: 'Edit Email',
                       border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)), // Red label
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
                     ),
                   ),
                   SizedBox(height: 8),
@@ -189,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       labelText: 'Edit Phone Number',
                       border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)), // Red label
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -197,8 +191,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: _saveData,
                     child: Text('Save Changes'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 0, 0, 0), // Warna latar belakang tombol
-                      foregroundColor: Colors.white, // Ubah warna teks tombol menjadi putih
+                      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      foregroundColor: Colors.white,
                     ),
                   ),
                 ],

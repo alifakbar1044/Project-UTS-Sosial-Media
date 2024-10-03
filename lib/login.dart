@@ -26,15 +26,13 @@ class _LoginPageState extends State<LoginPage> {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       sharedPreferences.setString('username', username);
       sharedPreferences.setString('password', password);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text('Login berhasil!\nUsername: $username\nPassword: $password'),
+          content: Text('Login berhasil!\nUsername: $username\nPassword: $password'),
         ),
       );
 
@@ -139,8 +137,9 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
             hintText: "Username",
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: BorderSide.none),
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
             fillColor: _primaryColor.withOpacity(0.1),
             filled: true,
             prefixIcon: Icon(Icons.person, color: _primaryColor),
@@ -158,8 +157,9 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
             hintText: "Password",
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: BorderSide.none),
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
             fillColor: _primaryColor.withOpacity(0.1),
             filled: true,
             prefixIcon: Icon(Icons.lock, color: _primaryColor),
@@ -184,16 +184,16 @@ class _LoginPageState extends State<LoginPage> {
             "Login",
             style: TextStyle(fontSize: 20, color: Colors.black),
           ),
-        )
+        ),
       ],
     );
   }
 
   Widget _forgotPassword(BuildContext context) {
     return TextButton(
-        onPressed: () {},
-        child: const Text("Forgot password?",
-            style: TextStyle(color: Colors.black)));
+      onPressed: () {},
+      child: const Text("Forgot password?", style: TextStyle(color: Colors.black)),
+    );
   }
 
   Widget _signup(BuildContext context) {
@@ -202,8 +202,9 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         const Text("Don't have an account? "),
         TextButton(
-            onPressed: () {},
-            child: const Text("Sign Up", style: TextStyle(color: Colors.black)))
+          onPressed: () {},
+          child: const Text("Sign Up", style: TextStyle(color: Colors.black)),
+        ),
       ],
     );
   }

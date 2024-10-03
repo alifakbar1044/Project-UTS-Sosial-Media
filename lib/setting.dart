@@ -14,15 +14,15 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  File? _image; // Variabel untuk menyimpan gambar yang dipilih
+  File? _image;
   String? username;
-  String status = "nature will never stop providing calm and comfort"; // Status default
+  String status = "nature will never stop providing calm and comfort";
 
   @override
   void initState() {
     super.initState();
-    _loadImage(); // Memuat gambar yang tersimpan saat aplikasi dimulai
-    _loadData();  // Memuat data profil
+    _loadImage();
+    _loadData();
   }
 
   Future<void> _loadData() async {
@@ -39,10 +39,7 @@ class _SettingPageState extends State<SettingPage> {
       setState(() {
         _image = savedImage;
       });
-      print('Selected image path: ${savedImage.path}'); // Debugging line
       _saveImagePath(savedImage.path);
-    } else {
-      print('No image selected.'); // Debugging line
     }
   }
 
@@ -78,7 +75,6 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  // Function to build each item
   Widget buildItem({
     required String text,
     required IconData iconData,
@@ -124,7 +120,6 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  // Simplified buildItemContent function
   Widget buildItemContent({
     required String text,
     required IconData iconData,
@@ -146,40 +141,39 @@ class _SettingPageState extends State<SettingPage> {
       backgroundColor: Colors.white,
       child: ListView(
         children: [
-          // Profile section
           CupertinoButton(
-            onPressed: () {}, // Ganti dengan fungsi jika ingin menambahkan interaksi
+            onPressed: () {},
             child: Column(
               children: [
-                SizedBox(height: 40), // Jarak atas untuk avatar
+                SizedBox(height: 40),
                 CircleAvatar(
-                  radius: 70,  // Ukuran avatar
+                  radius: 70,
+                  backgroundColor: Colors.black,
                   backgroundImage: _image != null
                       ? FileImage(_image!)
                       : AssetImage('assets/lingtan.png') as ImageProvider,
                 ),
-                SizedBox(height: 20), // Jarak antara avatar dan nama
+                SizedBox(height: 20),
                 Text(
                   username ?? 'Loading...',
                   style: TextStyle(
-                    fontSize: 35, // Ukuran font
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 0, 0, 0), // Warna font
+                    color: const Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
-                SizedBox(height: 10), // Jarak antara nama dan status
+                SizedBox(height: 10),
                 Text(
-                  status, // Tampilkan status yang telah ditentukan
+                  status,
                   style: TextStyle(
                     fontSize: 16,
-                    color: const Color.fromARGB(255, 0, 0, 0), // Warna untuk status
+                    color: const Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
-                SizedBox(height: 15), // Jarak antara status dan item "Ubah Foto Profil"
+                SizedBox(height: 15),
               ],
             ),
           ),
-          // Settings section
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: buildItem(

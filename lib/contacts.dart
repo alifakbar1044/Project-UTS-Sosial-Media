@@ -52,8 +52,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   void _addContact(String name, String message) {
     setState(() {
-      _contacts.add(
-          {"name": name, "message": message, "image": "assets/default.png"});
+      _contacts.add({"name": name, "message": message, "image": "assets/default.png"});
       _filteredContacts = List.from(_contacts);
     });
   }
@@ -112,8 +111,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_nameController.text.isNotEmpty &&
-                    _messageController.text.isNotEmpty) {
+                if (_nameController.text.isNotEmpty && _messageController.text.isNotEmpty) {
                   _addContact(_nameController.text, _messageController.text);
                   Navigator.pop(context);
                 } else {
@@ -225,16 +223,16 @@ class _ContactsPageState extends State<ContactsPage> {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(
-              radius: 29, // Ubah ukuran avatar disini
+              radius: 29,
               backgroundColor: const Color.fromARGB(255, 155, 1, 1),
               backgroundImage: contact['image'] != 'assets/default.png'
                   ? AssetImage(contact['image']!)
                   : null,
               child: contact['image'] == 'assets/default.png'
                   ? Text(
-                      contact['name']!.substring(0, 1), // Inisial nama
+                      contact['name']!.substring(0, 1),
                       style: const TextStyle(
-                        fontSize: 20, // Ubah ukuran inisial disini
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -245,7 +243,7 @@ class _ContactsPageState extends State<ContactsPage> {
               contact['name']!,
               style: const TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 25, // Ubah ukuran nama disini
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -253,7 +251,7 @@ class _ContactsPageState extends State<ContactsPage> {
               contact['message']!,
               style: const TextStyle(
                 fontFamily: 'Poppins',
-                fontSize: 14, // Ubah ukuran pesan disini
+                fontSize: 14,
               ),
             ),
             onTap: () {
